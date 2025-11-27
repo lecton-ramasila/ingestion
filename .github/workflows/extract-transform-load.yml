@@ -1,4 +1,5 @@
-name: Test Markdown Problem
+# .github/workflows/test_markdown.yml
+name: Recreate Markdown Duplication Problem
 
 on:
   workflow_dispatch:
@@ -16,9 +17,16 @@ jobs:
           python-version: 3.12
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install click
 
       - name: Run entrypoint
         id: chunk-analysis
         run: ./entrypoint.sh --chunks 42
         shell: bash
+
+      - name: Append output to job summary (heredoc)
+        run: |
+          cat <<"EOD" >> $GITHUB_STEP_SUMMARY
+          # Chunk Distribution Analysis
+          ${{ steps.chunk-analysis.outputs.stdout }}
+          EOD
