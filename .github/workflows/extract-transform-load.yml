@@ -2,6 +2,9 @@
 name: Recreate Markdown Duplication Problem
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
