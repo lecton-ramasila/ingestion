@@ -1,5 +1,5 @@
 # .github/workflows/test_markdown.yml
-name: Recreate Markdown Duplication Problem
+name: Test Markdown Problem
 
 on:
   push:
@@ -10,8 +10,9 @@ on:
 jobs:
   test-markdown:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up Python
