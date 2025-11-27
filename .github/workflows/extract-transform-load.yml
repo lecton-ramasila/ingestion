@@ -1,36 +1,19 @@
-# .github/workflows/test_markdown.yml
-name: Test Markdown Problem
+name: Recreate Production Markdown Issue
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
   test-markdown:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.12
-
-      - name: Install dependencies
-        run: pip install click
+      - name: Set environment variables
+        run: |
+          echo "INPUT_IMAGE=python:3.12-slim" >> $GITHUB_ENV
+          echo "INPUT_COMMAND=python3 -m lectoncli.write_summary --chunks 42" >> $GITHUB_ENV
 
       - name: Run entrypoint
-        id: chunk-analysis
-        run: ./entrypoint.sh --chunks 42
+        run: ./entrypoint.sh
         shell: bash
-
-      - name: Append output to job summary (heredoc)
-        run: |
-          cat <<"EOD" >> $GITHUB_STEP_SUMMARY
-          # Chunk Distribution Analysis
-          ${{ steps.chunk-analysis.outputs.stdout }}
-          EOD
