@@ -1,11 +1,24 @@
-name: Example Workflow
-on: push
+name: Test Markdown Problem
+
+on:
+  workflow_dispatch:
+
 jobs:
-  example_job:
+  test-markdown:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Run summary
-        run: |
-          export GITHUB_STEP_SUMMARY=$GITHUB_STEP_SUMMARY
-          ./entrypoint.sh --chunks 42
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run entrypoint
+        id: chunk-analysis
+        run: ./entrypoint.sh --chunks 42
+        shell: bash
